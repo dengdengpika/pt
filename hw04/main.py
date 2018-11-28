@@ -1,55 +1,63 @@
-class Shape(object):
-    '''形状'''
-     
-    # 都有一个area方法
-    # 当然很明显，这里用了属性装饰器
-    # 下面继承的子类都overwrite了这个方法
-    @property
-    def area(self):
-        pass
- 
-         
-class Rectangle(Shape):
-    '''矩形'''
-    def __init__(self, width=0, height=0):
-        super().__init__()
-        self.width = width
-        self.height = height
-         
-    @property
-    def area(self):
-        return self.width * self.height
-         
-         
-class Square(Rectangle):
-    '''正方形'''
-    def __init__(self, side=0):
-        super().__init__(side, side)
-         
-         
-         
-class Ellipse(Shape):
-    '''椭圆形'''
-    pi = 3.1415926535
-    def __init__(self, a=0, b=0):
-        super().__init__()
-        self.a = a
-        self.b = b
-         
-    @property
-    def area(self):
-        return self.a * self.b * self.pi
-         
-         
-class Circle(Ellipse):
-    '''圆形'''
-    def __init__(self, r=0):
-        super().__init__(r, r)
-         
-         
-shapes = [Ellipse(10,20), Square(15), Circle(5), Rectangle(20,15), Circle(5), Square(15), Ellipse(10,20)]
- 
-areas = [x.area for x in shapes]
-print('areas: ', areas)
-total_area = sum(areas)
-print('total_area: ', total_area)
+import tornado.ioloop
+import tornado.web
+
+class mainHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write('''<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
+<html>
+<head> 
+<title> New Document </title>
+<meta name="Generator" content="EditPlus">
+<meta name="Author" content="">
+<meta name="Keywords" content=""> 
+<meta name="Description" content=""> 
+</head>
+<body>
+<h1>9*9乘法表</h1>
+<script type="text/javascript">
+for(var i=1;i<=9;i++){
+    for(var j=1;j<=i;j++){
+        document.write(j+"*"+i+"="+i*j+"&nbsp;&nbsp;&nbsp;&nbsp;");
+    }
+    document.write('<br/>');
+}
+</script>
+</body>
+
+</html>
+
+''')
+class ptHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write('''<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
+<html>
+<head> 
+<title> New Document </title>
+<meta name="Generator" content="EditPlus">
+<meta name="Author" content="">
+<meta name="Keywords" content=""> 
+<meta name="Description" content=""> 
+</head>
+<body>
+<h1>4阶乘法表</h1>
+<script type="text/javascript">
+for(var i=1;i<=4;i++){
+    for(var j=1;j<=i;j++){
+        document.write(j+"*"+i+"="+i*j+"&nbsp;&nbsp;&nbsp;&nbsp;");
+    }
+    document.write('<br/>');
+}
+</script>
+</body>
+
+</html>
+
+''')
+application = tornado.web.Application([
+    (r"/", mainHandler),
+    (r"/4", ptHandler),
+])
+
+if __name__ == "__main__":
+    application.listen(8888)
+    tornado.ioloop.IOLoop.instance().start()
